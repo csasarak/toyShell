@@ -5,7 +5,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <errno.h>
+#include <string.h>
 #include "shell_consts.h"
+#include "cmd_exec.h"
 
 void command_loop();
 
@@ -22,14 +25,23 @@ int main(int argc, char *argv[]){
 void command_loop(){
     const char*  prompt = "OS1Shell -> ";
     char input_buf[BUF_SIZE];
-    int read_code;
+    ssize_t bytes_read;
 
     do{
         printf("%s", prompt);
         fflush(stdout);
         
-        read_code = read(STDIN_FILENO, &input_buf, BUF_SIZE);
-    }while(read_code != 0);
+        bytes_read = read(STDIN_FILENO, &input_buf, BUF_SIZE);
+        if(input_buf[bytes_read] == -1){
+            fprintf(stderr, "%s\n", strerror(errno));
+            exit(errno);
+        }
+        // Get rid of newline and end string
+        input_buf[bytes_read-1] = '\0';
+        exec_cmd(input_buf);
+
+    }while(bytes_read != 0);
 
     printf("\n");
 }
+
