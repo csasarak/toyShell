@@ -9,27 +9,15 @@
 #define ARG_START_SIZE 5
 #define ARG_INC_SIZE 5
 
+void exec_cmd(char *cmd);
+char** parse_cmd(char *cmd);
+
 /* Execute the command string by first tokenizing
    it and then forking 
 */   
 void exec_cmd(char *cmd){
-    // Separate the arguments for the command and store them
-    size_t args_size = sizeof(char**) * ARG_START_SIZE;
-    char** args = (char**)malloc(args_size);
-
-    int loop = 0;
-    args[loop] = strtok(cmd, " ");
-    do{
-        loop++;
-        // Add space for more arguments if needed
-        if(sizeof(char**) * loop == args_size){
-            args_size += sizeof(char**) * ARG_INC_SIZE;
-            args = (char**)realloc((void*)args, args_size);
-        }
-        
-        args[loop] = strtok(NULL, " ");
-        
-    }while(args[loop] != NULL);
+    // Need to find out if there is an & at the end for bg processes
+    char** args = parse_cmd(cmd);
 
     // Need to execute the program and then exit
     pid_t pid = fork();
