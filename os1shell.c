@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-#include "shell_consts.h"
+#include "config.h"
 #include "cmd_exec.h"
 
 void command_loop();
