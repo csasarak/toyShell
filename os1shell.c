@@ -9,6 +9,7 @@
 #include <string.h>
 #include "config.h"
 #include "cmd_exec.h"
+#include "hist.h"
 
 void command_loop();
 
@@ -38,8 +39,8 @@ void command_loop(){
         }
         // Get rid of newline and end string
         input_buf[bytes_read-1] = '\0';
+        add_cmd(input_buf);
         exec_cmd(input_buf);
-
     }while(bytes_read != 0);
 
     printf("\n");
