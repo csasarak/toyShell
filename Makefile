@@ -1,7 +1,7 @@
 all: os1shell
 
 CC=gcc
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -g
 
 os1shell: os1shell.o cmd_exec.o hist.o
 	$(CC) os1shell.o cmd_exec.o hist.o -o os1shell
@@ -14,4 +14,7 @@ cmd_exec.o: cmd_exec.c
 
 hist.o: hist.c
 	$(CC) $(CFLAGS) hist.c
+
+clean:
+	rm -rf *.o
 
