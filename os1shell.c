@@ -8,7 +8,7 @@
 #include <errno.h>
 #include <string.h>
 #include "config.h"
-#include "cmd_exec.h"
+#include "exec_cmd.h"
 #include "hist.h"
 
 void command_loop();

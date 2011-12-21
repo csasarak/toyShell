@@ -4,12 +4,11 @@
 #include <string.h>
 #include <errno.h>
 #include <sys/wait.h>
-#include "cmd_exec.h"
+#include "exec_cmd.h"
 
 #define ARG_START_SIZE 5
 #define ARG_INC_SIZE 5
 
-void exec_cmd(char *cmd);
 char** parse_cmd(char *cmd);
 
 /* Execute the command string by first tokenizing
