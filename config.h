@@ -1,3 +1,7 @@
+/*
+  Filename: config.h
+  Author: Christopher Sasarak <cms5347@rit.edu>
+*/
 #ifndef SHELL_CONST
 #define SHELL_CONST
 

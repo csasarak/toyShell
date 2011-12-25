@@ -1,6 +1,9 @@
 /*
   Filename: os1shell.c
   Author: Christopher Sasarak <cms5347@rit.edu>
+
+  This file includes the main method as well as code for the
+  command loop which reads commands and then sends them to be executed.
 */
 #include <stdlib.h>
 #include <stdio.h>

@@ -1,3 +1,7 @@
+/*
+  Filename: hist.h
+  Author: Christopher Sasarak <cms5347@rit.edu>
+*/
 #ifndef HIST_H
 
 #define HIST_H

@@ -1,3 +1,10 @@
+/*
+  Filename: exec_cmd.c
+  Author: Christopher Sasarak <cms5347@rit.edu>
+
+  This file contains code for parsing and executing a command that
+  has been passed to it.
+  */
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -9,7 +16,7 @@
 #define ARG_START_SIZE 5
 #define ARG_INC_SIZE 5
 
-char** parse_cmd(char *cmd);
+static char** parse_cmd(char *cmd);
 
 /* Execute the command string by first tokenizing
    it and then forking 

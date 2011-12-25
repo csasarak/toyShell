@@ -1,10 +1,16 @@
+/*
+  Filename: hist.c
+  Author: Christopher Sasarak <cms5347@rit.edu>
+
+  This file includes code for storing, maintaining, and retrieving
+  the shell's history.
+*/
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
 #include "config.h"
 
-// Make thread safe by passing history structs to functions
 static char** history = NULL;
 static int oldest_cmd = 0; // The oldest command in history
 
