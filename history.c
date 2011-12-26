@@ -1,5 +1,5 @@
 /*
-  Filename: hist.c
+  Filename: history.c
   Author: Christopher Sasarak <cms5347@rit.edu>
 
   This file includes code for storing, maintaining, and retrieving

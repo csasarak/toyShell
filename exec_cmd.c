@@ -12,6 +12,7 @@
 #include <errno.h>
 #include <sys/wait.h>
 #include "exec_cmd.h"
+#include "history.h"
 
 #define ARG_START_SIZE 5
 #define ARG_INC_SIZE 5

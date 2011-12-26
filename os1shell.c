@@ -12,7 +12,7 @@
 #include <string.h>
 #include "config.h"
 #include "exec_cmd.h"
-#include "hist.h"
+#include "history.h"
 
 void command_loop();
 
