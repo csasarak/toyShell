@@ -60,6 +60,10 @@ int add_cmd(char *cmd){
 
 char* next_cmd(int reset){
     static int curr_cmd = 0;
+    // Return if there isn't a history yet
+    if(history == NULL)
+        return NULL;
+    
     // Reset the iteration if necessary
     if(reset){
         curr_cmd = oldest_cmd;
@@ -76,3 +80,18 @@ char* next_cmd(int reset){
     }
     return history[curr_cmd];
 }
+
+void print_history(){
+    // Reset the iteration and get the first history element
+    char* cmd = next_cmd(1);
+    // Return if there isn't a history yet
+    if(cmd == NULL)
+        return;
+    
+    printf("%s\n", cmd);
+    // Print the rest
+    while((cmd = next_cmd(0)) != NULL){
+        printf("%s\n", cmd);
+    }
+}
+

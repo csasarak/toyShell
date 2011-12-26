@@ -10,11 +10,13 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <ctype.h>
 #include "config.h"
 #include "exec_cmd.h"
 #include "history.h"
 
 void command_loop();
+char* string_trim(char* str);
 
 int main(int argc, char *argv[]){
     command_loop();
@@ -29,6 +31,7 @@ int main(int argc, char *argv[]){
 void command_loop(){
     const char*  prompt = "OS1Shell -> ";
     char input_buf[BUF_SIZE];
+    char* trimmed_cmd;
     ssize_t bytes_read;
 
     do{
@@ -42,10 +45,37 @@ void command_loop(){
         }
         // Get rid of newline and end string
         input_buf[bytes_read-1] = '\0';
-        add_cmd(input_buf);
-        exec_cmd(input_buf);
+        trimmed_cmd = string_trim(input_buf);
+        // Check if this is the history command
+        if(strcmp("history", trimmed_cmd) == 0){
+            print_history();
+            continue;
+        }
+        else if(*trimmed_cmd == '\0'){
+            continue;
+        }
+        
+        add_cmd(trimmed_cmd);
+        exec_cmd(trimmed_cmd);
     }while(bytes_read != 0);
 
     printf("\n");
+}
+
+/*
+  Trim  whitespace from the beginning and end of a string
+*/ 
+char* string_trim(char* str)
+{
+    // Remove initial whitespace
+    for(; isspace(*str); str++){}
+    
+    // Remove ending whitespace
+    char *end = str + strlen(str) - 1;
+    for(; end > str && isspace(*end); end--){}
+
+    *(end + 1) = '\0';
+
+    return str;
 }
 
