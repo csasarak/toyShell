@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
+#include <signal.h>
 #include <ctype.h>
 #include "config.h"
 #include "exec_cmd.h"
@@ -17,8 +18,13 @@
 
 void command_loop();
 char* string_trim(char* str);
+static void install_sighandlers();
+static void handle_sigint(int signal_id);
+
+static const char*  prompt = "OS1Shell -> ";
 
 int main(int argc, char *argv[]){
+    install_sighandlers();
     command_loop();
     
     exit(0);
@@ -29,7 +35,6 @@ int main(int argc, char *argv[]){
   entered commands.
 */
 void command_loop(){
-    const char*  prompt = "OS1Shell -> ";
     char input_buf[BUF_SIZE];
     char* trimmed_cmd;
     ssize_t bytes_read;
@@ -39,8 +44,11 @@ void command_loop(){
         fflush(stdout);
         
         bytes_read = read(STDIN_FILENO, &input_buf, BUF_SIZE);
-        if(input_buf[bytes_read] == -1){
-            fprintf(stderr, "%s\n", strerror(errno));
+        if(bytes_read == -1){
+            if(errno == EINTR){
+                continue;
+            }
+            perror( strerror(errno));
             exit(errno);
         }
         // Get rid of newline and end string
@@ -77,5 +85,32 @@ char* string_trim(char* str)
     *(end + 1) = '\0';
 
     return str;
+}
+
+/*
+  This function will install sighandlers which will last for the
+  duration of the program.
+*/
+static void install_sighandlers(){
+    // This code was copied from Project1.pdf's section on sigaction    
+    struct sigaction signal_action;
+    signal_action.sa_handler = handle_sigint;
+    signal_action.sa_flags = 0;
+    sigemptyset(&signal_action.sa_mask);
+    sigaddset(&signal_action.sa_mask, SIGINT);
+    sigaction(SIGINT, &signal_action, NULL);
+        
+}
+/*
+  This is the function which executes when a SIGINT is received.
+*/
+static void handle_sigint(int signal_id){
+    if(signal_id == SIGINT){
+        printf("\n"); // make sure we're on a new line
+        print_history();
+    }
+    else{
+        printf("%s\n", strsignal(signal_id));
+    }
 }
 
