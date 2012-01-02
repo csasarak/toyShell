@@ -30,7 +30,7 @@ void exec_cmd(char *cmd){
     pid_t pid = fork();
         
     if(pid == -1){
-        fprintf(stderr, "%s\n", strerror(errno));
+        perror( strerror(errno));
         exit(errno);
     }
     if(pid != 0){
@@ -39,7 +39,7 @@ void exec_cmd(char *cmd){
     else{
         execvp(args[0], args);
         // If execvp returned there was an error
-        fprintf(stderr, "%s\n", strerror(errno));
+        perror( strerror(errno));
         
     }
     
