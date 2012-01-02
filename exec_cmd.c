@@ -4,13 +4,14 @@
 
   This file contains code for parsing and executing a command that
   has been passed to it.
-  */
+*/
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <ctype.h>
 #include "exec_cmd.h"
 #include "history.h"
 
@@ -23,9 +24,14 @@ static char** parse_cmd(char *cmd);
    it and then forking 
 */   
 void exec_cmd(char *cmd){
-    // Need to find out if there is an & at the end for bg processes
+    // Check if we need to wait for a command to finish
+    int str_end = strlen(cmd) - 1, background = 0;
+    if(cmd[str_end] == '&'){
+        background = 1;
+        cmd[str_end] = '\0';
+    }
     char** args = parse_cmd(cmd);
-
+        
     // Need to execute the program and then exit
     pid_t pid = fork();
         
@@ -33,14 +39,14 @@ void exec_cmd(char *cmd){
         perror( strerror(errno));
         exit(errno);
     }
-    if(pid != 0){
+    
+    if(pid && !background){
         wait(NULL);
     }
-    else{
+    else if(!pid){
         execvp(args[0], args);
         // If execvp returned there was an error
         perror( strerror(errno));
-        
     }
     
     free(args);

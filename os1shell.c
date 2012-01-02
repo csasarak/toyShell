@@ -93,13 +93,24 @@ char* string_trim(char* str)
 */
 static void install_sighandlers(){
     // This code was copied from Project1.pdf's section on sigaction    
-    struct sigaction signal_action;
-    signal_action.sa_handler = handle_sigint;
-    signal_action.sa_flags = 0;
-    sigemptyset(&signal_action.sa_mask);
-    sigaddset(&signal_action.sa_mask, SIGINT);
-    sigaction(SIGINT, &signal_action, NULL);
-        
+    struct sigaction act_sigint;
+    struct sigaction act_sigchld;
+    act_sigint.sa_handler = handle_sigint;
+    act_sigint.sa_flags = 0;
+    sigemptyset(&act_sigint.sa_mask);
+    sigaddset(&act_sigint.sa_mask, SIGINT);
+    sigaction(SIGINT, &act_sigint, NULL);
+    signal(SIGCHLD, SIG_IGN);
+
+    /* Set up a signal handler for when children exit, this is done by setting
+       the handler to SIG_IGN. According to POSIX.1-2001 (man 2 wait has more
+       details) setting this to SIG_IGN will prevent zombie processes from
+       occurring when a child process exits in the background.
+    */
+    act_sigchld.sa_handler = SIG_IGN;
+    act_sigchld.sa_flags = 0;
+    sigemptyset(&act_sigchld.sa_mask);
+    sigaction(SIGCHLD, &act_sigchld, NULL);
 }
 /*
   This is the function which executes when a SIGINT is received.
