@@ -15,8 +15,8 @@
 #include "exec_cmd.h"
 #include "history.h"
 
-#define ARG_START_SIZE 5
-#define ARG_INC_SIZE 5
+#define ARGS_START_SIZE 5
+#define ARGS_INC_SIZE 5
 
 static char** parse_cmd(char *cmd);
 
@@ -48,7 +48,8 @@ void exec_cmd(char *cmd){
         // If execvp returned there was an error
         perror( strerror(errno));
     }
-    
+
+    // Args aren't needed anymore so free the space used for pointers
     free(args);
 }
 
@@ -61,7 +62,7 @@ malloc() and can be freed with free().
 */
 static char** parse_cmd(char *cmd){
     // Separate the arguments for the command and store them
-    size_t args_size = sizeof(char**) * ARG_START_SIZE;
+    size_t args_size = sizeof(char**) * ARGS_START_SIZE;
     char** args = (char**)malloc(args_size);
 
     int loop = 0;
@@ -70,7 +71,7 @@ static char** parse_cmd(char *cmd){
         loop++;
         // Add space for more arguments if needed
         if(sizeof(char**) * loop == args_size){
-            args_size += sizeof(char**) * ARG_INC_SIZE;
+            args_size += sizeof(char**) * ARGS_INC_SIZE;
             args = (char**)realloc((void*)args, args_size);
         }
         

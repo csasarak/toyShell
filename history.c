@@ -29,7 +29,6 @@ int add_cmd(char *cmd){
             last_cmd++;
 
         if(history[last_cmd] != NULL){
-            // possible TODO: only reallocate if a larger memory chunk is needed
             free(history[last_cmd]);
             oldest_cmd = (oldest_cmd < HIST_SIZE - 1) ? oldest_cmd + 1 : 0;
         }

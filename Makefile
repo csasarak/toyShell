@@ -16,5 +16,5 @@ history.o: history.c
 	$(CC) $(CFLAGS) history.c
 
 clean:
-	rm -rf *.o
+	rm -rf *.o *~
 
