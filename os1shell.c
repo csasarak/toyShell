@@ -39,7 +39,7 @@ void command_loop(){
     char* trimmed_cmd;
     ssize_t bytes_read;
 
-    do{
+    while(1){
         printf("%s", prompt);
         fflush(stdout);
         
@@ -50,6 +50,9 @@ void command_loop(){
             }
             perror( strerror(errno));
             exit(errno);
+        }
+        else if(bytes_read == 0){
+            break;
         }
         // Get rid of newline and end string
         input_buf[bytes_read-1] = '\0';
@@ -65,7 +68,7 @@ void command_loop(){
         
         add_cmd(trimmed_cmd);
         exec_cmd(trimmed_cmd);
-    }while(bytes_read != 0);
+    }
 
     printf("\n");
 }
