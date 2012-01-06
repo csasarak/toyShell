@@ -103,7 +103,6 @@ static void install_sighandlers(){
     sigemptyset(&act_sigint.sa_mask);
     sigaddset(&act_sigint.sa_mask, SIGINT);
     sigaction(SIGINT, &act_sigint, NULL);
-    signal(SIGCHLD, SIG_IGN);
 
     /* Set up a signal handler for when children exit, this is done by setting
        the handler to SIG_IGN. According to POSIX.1-2001 (man 2 wait has more
